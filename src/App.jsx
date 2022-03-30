@@ -9,11 +9,14 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
+import Table from "./Table";
+import { sortData } from "./util";
 
 const App = () => {
 	const [countries, setCountries] = useState([]);
 	const [country, setCountry] = useState("worldwide");
 	const [countryInfo, setCountryInfo] = useState({});
+	const [tableData, setTableData] = useState([]);
 
 	// Need this to execute when the component loads because of
 	// the worldwide value that is set at the initial point
@@ -31,6 +34,10 @@ const App = () => {
 						name: country.country,
 						value: country.countryInfo.iso2,
 					}));
+
+					const sortedData = sortData(data);
+					setTableData(sortedData);
+
 					setCountries(countries);
 				});
 			});
@@ -55,8 +62,6 @@ const App = () => {
 				setCountryInfo(data);
 			});
 	};
-
-	console.log(countryInfo);
 
 	return (
 		<div className="app">
@@ -105,6 +110,7 @@ const App = () => {
 			<Card className="app__right">
 				<CardContent>
 					<h3>Live Cases by Country</h3>
+					<Table countries={tableData} />
 					<h3>Worldwide new cases</h3>
 				</CardContent>
 			</Card>
